@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>C4 Messenger</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+  <div class="chat">
+    <h2>📩 C4 Chat App</h2>
+    <ul id="messages"></ul>
+    <input id="message" placeholder="Type your message..." autocomplete="off"/>
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const socket = io();
+    const input = document.getElementById('message');
+    const messages = document.getElementById('messages');
+
+    socket.on('message', function(msg) {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      messages.appendChild(li);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    function sendMessage() {
+      const msg = input.value;
+      socket.send(msg);
+      input.value = '';
+    }
+  </script>
+</body>
+</html>
